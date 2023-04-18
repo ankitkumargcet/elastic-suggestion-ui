@@ -1,14 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
-import {
-  Container,
-  TextField,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from '@material-ui/core';
-import { Search } from '@material-ui/icons';
+import { Container, IconButton, InputAdornment, List, ListItem, ListItemButton, ListItemText, TextField } from '@mui/material';
+import { Search, Clear } from '@mui/icons-material';
 
 function App() {
   const [query, setQuery] = useState('');
@@ -17,7 +10,7 @@ function App() {
   const handleQueryChange = async (event) => {
     const newQuery = event.target.value;
     setQuery(newQuery);
-    const response = await axios.get(`/suggestions?query=${newQuery}`);
+    const response = await axios.get(`/suggestions?name=${newQuery}`);
     setSuggestions(response.data);
   };
 
@@ -32,16 +25,25 @@ function App() {
         margin="normal"
         InputProps={{
           startAdornment: (
-            <ListItemIcon>
+            <InputAdornment position="start">
               <Search />
-            </ListItemIcon>
+            </InputAdornment>
           ),
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={() => setQuery('')}>
+                <Clear />
+              </IconButton>
+            </InputAdornment>
+          )
         }}
       />
       <List>
         {suggestions.map((suggestion) => (
-          <ListItem button key={suggestion}>
-            <ListItemText primary={suggestion} />
+          <ListItem key={suggestion}>
+            <ListItemButton>
+              <ListItemText primary={suggestion} />
+            </ListItemButton>
           </ListItem>
         ))}
       </List>
