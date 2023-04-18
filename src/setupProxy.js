@@ -8,4 +8,11 @@ module.exports = function(app) {
       changeOrigin: true,
     })
   );
+  app.use(
+    '/findById',
+    createProxyMiddleware({
+      target: 'http://localhost:8091/poc/customer',
+      changeOrigin: true,
+    })
+  );
 };
